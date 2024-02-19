@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -19,18 +18,29 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from "@/components/ui/drawer";
 import { DialogClose } from "@radix-ui/react-dialog";
 import { toast } from "sonner";
 import { Navbar } from "./Navbar";
 import { Link } from "react-router-dom";
 import { FaCode } from "react-icons/fa";
+import SkeletonCard from "./SkeletonCard";
 
 export default function CardWithForm() {
   const [isChanged, setIsChanged] = useState(false); // Add state to track changes in the component
   const [data, setData] = useState([]);
+  const [showSkeleton, setShowSkeleton] = useState(true);
   const [detective, setDetective] = useState({});
   const detectiveEmail = localStorage.getItem("email");
-
 
   async function handleClick(componentId) {
     try {
@@ -48,8 +58,6 @@ export default function CardWithForm() {
         withCredentials: true,
       });
 
-     
-
       if (response.status === 200) {
         toast.success(response.data.message);
       } else if (response.status === 201 || response.status === 203) {
@@ -61,13 +69,16 @@ export default function CardWithForm() {
       toast.error("An error occurred during the purchase process");
     }
   }
-  
+
   useEffect(() => {
     const fetchDetectiveData = async () => {
       try {
-        const response = await axios.post(import.meta.env.VITE_API_GET_DETECTIVE, {
-          email: detectiveEmail,
-        });
+        const response = await axios.post(
+          import.meta.env.VITE_API_GET_DETECTIVE,
+          {
+            email: detectiveEmail,
+          }
+        );
 
         // Update detective state
         response.data.purchaseItems = response.data.purchaseItems || [];
@@ -80,19 +91,17 @@ export default function CardWithForm() {
     fetchDetectiveData();
   }, [isChanged]);
 
-
   useEffect(() => {
     axios
       .get(import.meta.env.VITE_API_GET_COMPONENTS)
       .then((res) => {
         setData(res.data);
-        // Log the data after updating the state
+        setShowSkeleton(false);
       })
       .catch((error) => {
         console.error("Error fetching component data:", error);
       });
   }, []);
- 
 
   return (
     <>
@@ -101,58 +110,68 @@ export default function CardWithForm() {
 
         <div className="flex flex-col justify-center items-center">
           <div className="flex flex-wrap justify-center gap-7 mt-20 my-3 p-6">
-            {data.map(({ componentId, name, image, price, points ,link}) => (
-              <Card key={componentId} className="w-[350px]">
-      
-                <CardHeader className="max-w-full h-[300px] overflow-hidden mb-4 flex justify-center">
-                  <img
-                    src={image}
-                    alt="Card Image"
-                  />
-                </CardHeader>
-                <CardContent>
-                  <CardTitle>{name}</CardTitle>
-                  <CardDescription>Price : {price}</CardDescription>
-                  <CardDescription>Points : {points}</CardDescription>
-                </CardContent>
-                <CardFooter className="flex justify-between">
-                  {
-                  detective.purchaseItems &&
-                  detective.purchaseItems.includes(componentId) ? (
-                    <Button
-                      size="lg"
-                      className="bg-green-800"
-                    >
-                      <Link to={link} target="_blank" className="flex items-center gap-2">Get Source Code <FaCode/> </Link> 
-                    </Button>
-                  ) : (
-                    <Dialog>
-                      <DialogTrigger asChild>
-                        <Button size="lg" className="">
-                          Buy 
-                        </Button>
-                      </DialogTrigger>
-                      <DialogContent className="sm:max-w-[425px]">
-                        <DialogHeader>
-                          <DialogTitle>Confirm To Buy</DialogTitle>
-                          <DialogDescription>
-                            Do You want to Buy the Component ?
-                          </DialogDescription>
-                        </DialogHeader>
-                        <DialogFooter>
-                          <DialogClose
-                            onClick={() => handleClick(componentId)}
-                            className=""
-                          >
-                            <Button> Confirm Buy</Button>
-                          </DialogClose>
-                        </DialogFooter>
-                      </DialogContent>
-                    </Dialog>
-                  )}
-                </CardFooter>
-              </Card>
-            ))}
+            {showSkeleton ? (
+              <SkeletonCard />
+            ) : (
+              data.map(({ componentId, name, image, price, points, link }) => (
+                <Card key={componentId} className="w-[350px] flex flex-col gap-4">
+                  <CardHeader className="max-w-full h-[300px] overflow-hidden mb-4 flex justify-center">
+                    <img src={image} alt="Card Image" />
+                  </CardHeader>
+                  <CardContent>
+                    <CardTitle className="text-xl font-semibold">{name}</CardTitle>
+                    <div className="flex justify-between">
+                    <CardDescription className="text-3xl font-bold text-gray-900 dark:text-white">₹{price}</CardDescription>
+                    <CardDescription className="text-3xl font-bold text-yellow-500 dark:text-white">+{points} <span className="text-sm">Points</span></CardDescription>
+                    </div>
+                  </CardContent>
+                  <CardFooter className="flex justify-between">
+                    {detective.purchaseItems &&
+                    detective.purchaseItems.includes(componentId) ? (
+                      <Button
+                        size="lg"
+                        className="w-full bg-green-800 hover:bg-green-900"
+                      >
+                        <Link
+                          to={link}
+                          target="_blank"
+                          className="flex items-center gap-2"
+                        >
+                          Get Source Code <FaCode />{" "}
+                        </Link>
+                      </Button>
+                    ) : (
+                      <Drawer>
+                        <DrawerTrigger asChild>
+                          <Button size="lg" className="w-full bg-black">
+                            Buy
+                          </Button>
+                        </DrawerTrigger>
+                        <DrawerContent className="w-full flex justify-center items-center">
+                          <DrawerHeader className="w-full flex flex-col justify-center items-center">
+                            <div className="max-w-full h-[300px] overflow-hidden mb-4 flex justify-center">
+                              <img src={image} className="" alt="Card Image" />
+                            </div>
+                            <DrawerTitle className="text-2xl">{ name }</DrawerTitle>
+                            <DrawerDescription>
+                              Do You want to Buy the Component ?
+                            </DrawerDescription>
+                          </DrawerHeader>
+                          <DrawerFooter>
+                            <DrawerClose
+                              onClick={() => handleClick(componentId)}
+                              className=""
+                            >
+                              <Button size="lg"> Confirm Buy</Button>
+                            </DrawerClose>
+                          </DrawerFooter>
+                        </DrawerContent>
+                      </Drawer>
+                    )}
+                  </CardFooter>
+                </Card>
+              ))
+            )}
           </div>
         </div>
       </div>

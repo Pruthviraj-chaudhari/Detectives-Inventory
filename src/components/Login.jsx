@@ -5,7 +5,7 @@ import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import { ReloadIcon } from "@radix-ui/react-icons";
+import { LuLoader2 } from "react-icons/lu";
 
 const Login = () => {
   const [loading, setLoading] = useState(false);
@@ -80,24 +80,21 @@ const Login = () => {
         ></Input>
       </div>
 
-      {
-        loading ? (
-          <Button disabled variant="outline" className="text-black w-full mt-5"> 
-        <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
-        Please wait
-      </Button>
-        ) : (
-          <Button
-        variant="outline"
-        type="submit"
-        className="text-black w-full mt-5"
-        onClick={handleSubmit}
-      >
-        Login
-      </Button>
-        )
-      }
-      
+      {loading ? (
+        <Button disabled variant="outline" className="text-black w-full mt-5">
+          <LuLoader2 className="mr-2 h-4 w-4 animate-spin " />
+          Please wait
+        </Button>
+      ) : (
+        <Button
+          variant="outline"
+          type="submit"
+          className="text-black w-full mt-5"
+          onClick={handleSubmit}
+        >
+          Login
+        </Button>
+      )}
     </form>
   );
 };
