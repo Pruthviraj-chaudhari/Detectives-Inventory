@@ -86,7 +86,7 @@ export function Navbar({ isChanged }) {
             </svg>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">$ {detective.points}</div>
+            <div className="text-2xl font-bold">₹ {detective.points}</div>
             <p className="text-xs text-muted-foreground">
               +20.1% from last month
             </p>
