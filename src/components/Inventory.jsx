@@ -37,7 +37,7 @@ export default function CardWithForm() {
       const detectiveEmail = localStorage.getItem("email"); // Retrieve detective's email from localStorage
 
       const response = await axios({
-        url: `https://detectives-return-backend.onrender.com/purchase/${componentId}`,
+        url: `${import.meta.env.VITE_API_PURCHASE}/${componentId}`,
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -61,10 +61,11 @@ export default function CardWithForm() {
       toast.error("An error occurred during the purchase process");
     }
   }
+  
   useEffect(() => {
     const fetchDetectiveData = async () => {
       try {
-        const response = await axios.post("https://detectives-return-backend.onrender.com/detectives", {
+        const response = await axios.post(import.meta.env.VITE_API_GET_DETECTIVE, {
           email: detectiveEmail,
         });
 
@@ -79,11 +80,10 @@ export default function CardWithForm() {
     fetchDetectiveData();
   }, [isChanged]);
 
- 
 
   useEffect(() => {
     axios
-      .get("https://detectives-return-backend.onrender.com/components")
+      .get(import.meta.env.VITE_API_GET_COMPONENTS)
       .then((res) => {
         setData(res.data);
         // Log the data after updating the state

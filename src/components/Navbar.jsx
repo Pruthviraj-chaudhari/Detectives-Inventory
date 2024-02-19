@@ -1,8 +1,9 @@
+/* eslint-disable react/prop-types */
 import { Menubar, MenubarMenu, MenubarTrigger } from "@/components/ui/menubar";
 import axios from "axios";
 import { useEffect, useState } from "react";
 
-export function Navbar({isChanged,setIsChanged}) {
+export function Navbar({ isChanged }) {
   const [detective, setDetective] = useState({});
 
   const detectiveEmail = localStorage.getItem("email");
@@ -10,7 +11,7 @@ export function Navbar({isChanged,setIsChanged}) {
   useEffect(() => {
     const fetchDetectiveData = async () => {
       try {
-        const response = await axios.post('https://detectives-return-backend.onrender.com/detectives', {
+        const response = await axios.post(import.meta.env.VITE_API_GET_DETECTIVE, {
           email: detectiveEmail 
         });
         
