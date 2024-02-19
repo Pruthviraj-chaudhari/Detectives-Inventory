@@ -1,8 +1,6 @@
 /* eslint-disable react/no-unescaped-entities */
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
-import { AppContext } from "@/contexts/AppContext";
-import { useContext } from "react";
 import {
   Card,
   CardContent,
@@ -12,23 +10,12 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
-
 const Welcome = () => {
-
-  const { isLogin } = useContext(AppContext);
 
   const navigate = useNavigate();
 
   const handleAddMe = () => {
     navigate("/auth");
-  };
-
-  const handleMyProfile = () => {
-    navigate("/myprofile");
-  }
-
-  const handleDiscover = () => {
-    navigate("/profiles");
   };
 
   return (
@@ -55,44 +42,37 @@ const Welcome = () => {
           <CardDescription className="lg:text-lg">
             Welcome to{" "}
             <span className="text-slate-900 font-medium">
-              Detective Returns - The Unfinished Buisness!
+              Detective Returns - The Unfinished Business!
             </span>
             <br />
             <br />
-            Get Ready for the thrilled, the Coding Skill. So Let's have some chill.
+            Get Ready for the thrilled, the Coding Skill. So Let's have some
+            chill.
             <br />
             <br />
             Let's Go ❤️
             <br />
             <br />
-            Click Login
+            Click Here to Login
           </CardDescription>
         </CardContent>
         <CardFooter className="p-1 mt-4 gap-4 flex justify-start items-center">
-          
-          {!isLogin && (
             <Button
               className="border-slate-700 border-2"
               variant="outline"
+              size="lg"
               onClick={handleAddMe}
             >
-              Login
+              Login 
             </Button>
-          )}
-          {isLogin && (
-            <Button
-              className="border-slate-700 border-2"
-              variant="outline"
-              onClick={handleMyProfile}
-            >
-              My Profile
-            </Button>
-          )}
         </CardFooter>
       </div>
 
       <div className="flex justify-center lg:w-[80%]">
-        <img src="https://firebasestorage.googleapis.com/v0/b/detectives-return.appspot.com/o/Detective%E2%80%99s%20Returns%20logo.jpg?alt=media&token=f1f266ce-369e-42dc-beb4-da89cf690259" alt="Students" />
+        <img
+          src="https://firebasestorage.googleapis.com/v0/b/detectives-return.appspot.com/o/Detective%E2%80%99s%20Returns%20logo.jpg?alt=media&token=f1f266ce-369e-42dc-beb4-da89cf690259"
+          alt="Students"
+        />
       </div>
     </Card>
   );

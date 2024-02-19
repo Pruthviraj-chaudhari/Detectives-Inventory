@@ -1,8 +1,5 @@
 /* eslint-disable react/no-unescaped-entities */
-import Signup from "./Signup";
 import Login from "./Login";
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -19,7 +16,7 @@ export default function AuthPage() {
 
   return (
     <>
-      <Card className="flex flex-col lg:flex-row bg-black text-white border-none max-w-[90vw] md:w-[80vw] justify-center mx-auto p-2 rounded-lg m-3">
+      <Card className="flex flex-col justify-center items-center lg:flex-row bg-black text-white border-none max-w-[90vw] md:w-[80vw] mx-auto p-2 rounded-lg m-3">
         <div className="ml-5 lg:w-1/2">
           <CardHeader>
             <CardTitle className="text-2xl">
@@ -67,7 +64,6 @@ export default function AuthPage() {
               </div>
               <div className="flex flex-col gap-5">
                     <Login />
-                {/* {signupForm ? ( <Signup /> ): (<Login />)}*/}
               </div>
             </div>
           </div>

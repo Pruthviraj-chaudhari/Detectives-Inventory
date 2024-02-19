@@ -23,6 +23,7 @@ import { DialogClose } from "@radix-ui/react-dialog";
 import { toast } from "sonner";
 import { Navbar } from "./Navbar";
 import { Link } from "react-router-dom";
+import { FaCode } from "react-icons/fa";
 
 export default function CardWithForm() {
   const [isChanged, setIsChanged] = useState(false); // Add state to track changes in the component
@@ -30,10 +31,7 @@ export default function CardWithForm() {
   const [detective, setDetective] = useState({});
   const detectiveEmail = localStorage.getItem("email");
 
-  function getButton(link) {
-   
-    window.location.href = link;  
-  }
+
   async function handleClick(componentId) {
     try {
       const detectiveEmail = localStorage.getItem("email"); // Retrieve detective's email from localStorage
@@ -103,13 +101,13 @@ export default function CardWithForm() {
 
         <div className="flex flex-col justify-center items-center">
           <div className="flex flex-wrap justify-center gap-7 mt-20 my-3 p-6">
-            {data.map(({ componentId, name, price, points ,link}) => (
+            {data.map(({ componentId, name, image, price, points ,link}) => (
               <Card key={componentId} className="w-[350px]">
-                <CardHeader>
+      
+                <CardHeader className="max-w-full h-[300px] overflow-hidden mb-4 flex justify-center">
                   <img
-                    src="https://cdn.pixabay.com/photo/2023/03/16/16/49/watercolor-7857103_640.png"
+                    src={image}
                     alt="Card Image"
-                    className="w-full"
                   />
                 </CardHeader>
                 <CardContent>
@@ -123,16 +121,15 @@ export default function CardWithForm() {
                   detective.purchaseItems.includes(componentId) ? (
                     <Button
                       size="lg"
-                      // onclick={() => getButton({link})}
-                      className="bg-green-500"
+                      className="bg-green-800"
                     >
-                      <Link to={link} target="_blank">Get Source Code</Link> 
+                      <Link to={link} target="_blank" className="flex items-center gap-2">Get Source Code <FaCode/> </Link> 
                     </Button>
                   ) : (
                     <Dialog>
                       <DialogTrigger asChild>
                         <Button size="lg" className="">
-                          Buy Component
+                          Buy 
                         </Button>
                       </DialogTrigger>
                       <DialogContent className="sm:max-w-[425px]">

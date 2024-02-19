@@ -2,15 +2,15 @@ import { Label } from "./ui/label";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { useState } from "react";
-import useApiHandler from "@/Hooks/useApiHandler";
-import { checkRequiredFields } from "@/utils/formUtils";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import { ReloadIcon } from "@radix-ui/react-icons";
 
 const Login = () => {
-  const  navigate  = useNavigate();
+  const [loading, setLoading] = useState(false);
 
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     teamId: "",
@@ -25,32 +25,35 @@ const Login = () => {
     }));
   };
 
-//  make post request at localhost:5000/login
-//  which will take FormData
-const handleSubmit = async (event) => {
-  event.preventDefault(); // Prevent default form submission behavior
+  //  make post request at localhost:5000/login
+  //  which will take FormData
+  const handleSubmit = async (event) => {
+    event.preventDefault(); // Prevent default form submission behavior
 
-  try {
-    const response = await axios.post('https://detectives-return-backend.onrender.com/login', formData);
+    setLoading(true);
+    try {
+      const response = await axios.post(
+        "https://detectives-return-backend.onrender.com/login",
+        formData
+      );
 
-    // Handle response data as needed
-    const email = response.data.email;
-    localStorage.setItem('email', email);
-    navigate('/inventory');
-  } catch (error) {
-    // Handle errors
-    console.error('Error:', error);
-    if (error.response.status === 401) {
-      // Unauthorized: Incorrect credentials
-      toast.warning("Incorrect team ID or password");
-    } else {
-      // Other error occurred
-      toast.error("An error occurred. Please try again later.");
+      // Handle response data as needed
+      const email = response.data.email;
+      localStorage.setItem("email", email);
+      navigate("/inventory");
+    } catch (error) {
+      // Handle errors
+      console.error("Error:", error);
+      if (error.response.status === 401) {
+        // Unauthorized: Incorrect credentials
+        toast.warning("Incorrect team ID or password");
+      } else {
+        // Other error occurred
+        toast.error("An error occurred. Please try again later.");
+      }
     }
-  }
-};
-
-
+    setLoading(false);
+  };
 
   return (
     <form>
@@ -77,14 +80,24 @@ const handleSubmit = async (event) => {
         ></Input>
       </div>
 
-      <Button
+      {
+        loading ? (
+          <Button disabled variant="outline" className="text-black w-full mt-5"> 
+        <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
+        Please wait
+      </Button>
+        ) : (
+          <Button
         variant="outline"
         type="submit"
         className="text-black w-full mt-5"
-        onClick={handleSubmit    }
+        onClick={handleSubmit}
       >
         Login
       </Button>
+        )
+      }
+      
     </form>
   );
 };
