@@ -10,15 +10,6 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import {
   Drawer,
   DrawerClose,
   DrawerContent,
@@ -28,7 +19,6 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
-import { DialogClose } from "@radix-ui/react-dialog";
 import { toast } from "sonner";
 import { Navbar } from "./Navbar";
 import { Link } from "react-router-dom";
@@ -38,7 +28,7 @@ import SkeletonCard from "./SkeletonCard";
 export default function CardWithForm() {
   const [isChanged, setIsChanged] = useState(false); // Add state to track changes in the component
   const [data, setData] = useState([]);
-  const [showSkeleton, setShowSkeleton] = useState(true);
+  const [loading, setLoading] = useState(true);
   const [detective, setDetective] = useState({});
   const detectiveEmail = localStorage.getItem("email");
 
@@ -96,7 +86,7 @@ export default function CardWithForm() {
       .get(import.meta.env.VITE_API_GET_COMPONENTS)
       .then((res) => {
         setData(res.data);
-        setShowSkeleton(false);
+        setLoading(false);
       })
       .catch((error) => {
         console.error("Error fetching component data:", error);
@@ -105,24 +95,35 @@ export default function CardWithForm() {
 
   return (
     <>
-      <div className="flex flex-col justify-center items-center gap-2">
+      <div className="flex flex-col w-[100vw] justify-center items-center gap-2">
+
         <Navbar isChanged={isChanged} setIsChanged={setIsChanged}></Navbar>
 
         <div className="flex flex-col justify-center items-center">
-          <div className="flex flex-wrap justify-center gap-7 mt-20 my-3 p-6">
-            {showSkeleton ? (
+          <div className="flex flex-wrap justify-center items-center gap-7 mt-6 my-3">
+
+            {loading ? (
               <SkeletonCard />
             ) : (
               data.map(({ componentId, name, image, price, points, link }) => (
-                <Card key={componentId} className="w-[350px] flex flex-col gap-4">
+                <Card
+                  key={componentId}
+                  className="w-[350px] flex flex-col gap-4"
+                >
                   <CardHeader className="max-w-full h-[300px] overflow-hidden mb-4 flex justify-center">
                     <img src={image} alt="Card Image" />
                   </CardHeader>
                   <CardContent>
-                    <CardTitle className="text-xl font-semibold">{name}</CardTitle>
+                    <CardTitle className="text-xl font-semibold">
+                      {name}
+                    </CardTitle>
                     <div className="flex justify-between">
-                    <CardDescription className="text-3xl font-bold text-gray-900 dark:text-white">₹{price}</CardDescription>
-                    <CardDescription className="text-3xl font-bold text-yellow-500 dark:text-white">+{points} <span className="text-sm">Points</span></CardDescription>
+                      <CardDescription className="text-3xl font-bold text-gray-900 dark:text-white">
+                        ₹{price}
+                      </CardDescription>
+                      <CardDescription className="text-3xl font-bold text-yellow-500 dark:text-white">
+                        +{points} <span className="text-sm">Points</span>
+                      </CardDescription>
                     </div>
                   </CardContent>
                   <CardFooter className="flex justify-between">
@@ -152,8 +153,19 @@ export default function CardWithForm() {
                             <div className="max-w-full h-[300px] overflow-hidden mb-4 flex justify-center">
                               <img src={image} className="" alt="Card Image" />
                             </div>
-                            <DrawerTitle className="text-2xl">{ name }</DrawerTitle>
+                            <DrawerTitle className="text-3xl font-bold text-gray-900 mb-4">
+                              {name}
+                            </DrawerTitle>
                             <DrawerDescription>
+                              <div className="flex justify-evenly mb-4">
+                                <CardDescription className="text-3xl font-bold text-gray-900 dark:text-white">
+                                  ₹{price}
+                                </CardDescription>
+                                <CardDescription className="text-3xl font-bold text-yellow-500 dark:text-white">
+                                  +{points}{" "}
+                                  <span className="text-sm">Points</span>
+                                </CardDescription>
+                              </div>
                               Do You want to Buy the Component ?
                             </DrawerDescription>
                           </DrawerHeader>

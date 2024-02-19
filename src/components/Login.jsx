@@ -81,7 +81,7 @@ const Login = () => {
       </div>
 
       {loading ? (
-        <Button disabled variant="outline" className="text-black w-full mt-5">
+        <Button  variant="outline" className="text-black w-full mt-5">
           <LuLoader2 className="mr-2 h-4 w-4 animate-spin " />
           Please wait
         </Button>

@@ -1,6 +1,6 @@
 const Footer = () => {
   return (
-    <div className="relative max-h-screen">
+    <div className="relative max-h-screen  w-[95vw]">
       <footer className="text-center text-xs text-slate-700 tracking-tight py-4 mt-auto">
         <p>
           Design & Developed By
