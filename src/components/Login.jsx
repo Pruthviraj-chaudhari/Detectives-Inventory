@@ -6,11 +6,14 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { LuLoader2 } from "react-icons/lu";
+import { useDispatch, useSelector } from "react-redux";
+import { setUser, setToken, setLoading } from "@/redux/slices";
 
 const Login = () => {
-  const [loading, setLoading] = useState(false);
-
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const { loading } = useSelector((state) => state.auth);
 
   const [formData, setFormData] = useState({
     teamId: "",
@@ -25,34 +28,30 @@ const Login = () => {
     }));
   };
 
-  //  make post request at localhost:5000/login
-  //  which will take FormData
   const handleSubmit = async (event) => {
-    event.preventDefault(); // Prevent default form submission behavior
-
-    setLoading(true);
+    event.preventDefault();
+    dispatch(setLoading(true));
     try {
       const response = await axios.post(
         import.meta.env.VITE_API_LOGIN_URL,
         formData
       );
+      const { token, detective } = response.data;
+      dispatch(setToken(token));
+      dispatch(setUser(detective));
 
-      // Handle response data as needed
-      const email = response.data.email;
-      localStorage.setItem("email", email);
-      navigate("/inventory");
+      localStorage.setItem("token", token);
+      localStorage.setItem("detective", JSON.stringify(detective));
     } catch (error) {
-      // Handle errors
       console.error("Error:", error);
       if (error.response.status === 401) {
-        // Unauthorized: Incorrect credentials
         toast.warning("Incorrect team ID or password");
       } else {
-        // Other error occurred
         toast.error("An error occurred. Please try again later.");
       }
     }
-    setLoading(false);
+    dispatch(setLoading(false));
+    navigate("/inventory");
   };
 
   return (
@@ -81,7 +80,7 @@ const Login = () => {
       </div>
 
       {loading ? (
-        <Button  variant="outline" className="text-black w-full mt-5">
+        <Button variant="outline" className="text-black w-full mt-5">
           <LuLoader2 className="mr-2 h-4 w-4 animate-spin " />
           Please wait
         </Button>

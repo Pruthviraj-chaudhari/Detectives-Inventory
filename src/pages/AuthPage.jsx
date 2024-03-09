@@ -1,5 +1,5 @@
 /* eslint-disable react/no-unescaped-entities */
-import Login from "./Login";
+import Login from "../components/Login";
 import {
   Card,
   CardContent,

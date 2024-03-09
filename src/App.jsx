@@ -1,13 +1,12 @@
-import Welcome from "./components/Welcome";
+import Welcome from "./pages/HomePage";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Footer from "./components/Footer";
-import AuthPage from "./components/AuthPage";
-import Inventory from "./components/Inventory";
+import AuthPage from "./pages/AuthPage";
+import Inventory from "./pages/InventoryPage";
+import { useSelector } from "react-redux";
 
 function App() {
-  const detective = localStorage.getItem("email");
-  const isDetective = detective ? true : false;
-
+  const { token } = useSelector((state) => state.auth);
 
   return (
     <div className="flex flex-col min-h-screen bg-black w-full">
@@ -15,12 +14,11 @@ function App() {
         <Routes>
           <Route path="/" element={<Welcome />} />
           <Route path="/auth" element={<AuthPage />} />
-          {isDetective ? (
+          {token !== null ? (
             <Route path="/inventory" element={<Inventory />} />
           ) : (
             <Route path="/inventory" element=<Navigate to="/auth" /> />
           )}
-
         </Routes>
       </div>
       <Footer />

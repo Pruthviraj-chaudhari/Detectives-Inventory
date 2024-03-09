@@ -1,14 +1,16 @@
+import { Link } from "react-router-dom";
+
 const Footer = () => {
   return (
     <div className="relative max-h-screen  w-[95vw]">
-      <footer className="text-center text-xs text-slate-700 tracking-tight py-4 mt-auto">
+      <footer className="text-center text-xs font-normal text-slate-700 tracking-wide py-4 mt-auto">
         <p>
-          Design & Developed By
+          Designed & Developed By
           <span className="text-slate-500">
-            {/* <a href="https://www.linkedin.com/in/pruthviraj-chaudhari-8386ab230" target="_blank" rel="noopener noreferrer"> */}
+            <Link to="https://www.linkedin.com/in/pruthviraj-chaudhari-8386ab230" target="_blank" rel="noopener noreferrer">
               {" "}
               @The Akatsuki Coding Club 
-            {/* </a> */}
+            </Link>
           </span>
         </p>
       </footer>
