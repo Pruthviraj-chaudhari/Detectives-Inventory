@@ -75,7 +75,7 @@ const Login = () => {
           type="text"
           onChange={changeHandler}
           className="border border-gray-600"
-          placeholder="Ex : abc"
+          placeholder="* * * * * * * *"
         ></Input>
       </div>
 
@@ -91,7 +91,7 @@ const Login = () => {
           className="text-black w-full mt-5"
           onClick={handleSubmit}
         >
-          Login
+          Login Team
         </Button>
       )}
     </form>

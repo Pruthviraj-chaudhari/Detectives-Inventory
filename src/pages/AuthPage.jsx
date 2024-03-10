@@ -59,7 +59,7 @@ export default function AuthPage() {
                   Welcome Back
                 </h1>
                 <p className="text-sm text-muted-foreground">
-                  Enter your email & password below to login
+                  Enter your unique team ID & password below to login
                 </p>
               </div>
               <div className="flex flex-col gap-5">
