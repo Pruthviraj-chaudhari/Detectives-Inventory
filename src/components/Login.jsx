@@ -42,16 +42,16 @@ const Login = () => {
 
       localStorage.setItem("token", token);
       localStorage.setItem("detective", JSON.stringify(detective));
+      navigate("/inventory");
     } catch (error) {
       console.error("Error:", error);
       if (error.response.status === 401) {
-        toast.warning("Incorrect team ID or password");
+        toast.warning("Incorrect Team ID or Password");
       } else {
         toast.error("An error occurred. Please try again later.");
       }
     }
     dispatch(setLoading(false));
-    navigate("/inventory");
   };
 
   return (
