@@ -12,6 +12,7 @@ function App() {
     <div className="flex flex-col min-h-screen bg-black w-full">
       <div className="flex-grow flex flex-wrap justify-center items-center lg:pt-6 px-1">
         <Routes>
+          <Route path="/*" element={<Welcome />} />
           <Route path="/" element={<Welcome />} />
           <Route path="/auth" element={<AuthPage />} />
           {token !== null ? (
