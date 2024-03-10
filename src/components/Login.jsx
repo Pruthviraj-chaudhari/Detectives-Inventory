@@ -8,6 +8,7 @@ import { toast } from "sonner";
 import { LuLoader2 } from "react-icons/lu";
 import { useDispatch, useSelector } from "react-redux";
 import { setUser, setToken, setLoading } from "@/redux/slices";
+import { checkRequiredFields } from "@/utils/formValidator";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -30,6 +31,14 @@ const Login = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+    // Check for required feilds
+    const requiredFields = ["teamId", "password"];
+    const isLoginValid = checkRequiredFields(formData, requiredFields);
+    if (!isLoginValid) {
+      return;
+    }
+
     dispatch(setLoading(true));
     try {
       const response = await axios.post(
